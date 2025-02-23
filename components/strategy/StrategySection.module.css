@@ -1,0 +1,54 @@
+/* StrategySection.module.css */
+
+
+.card {
+    background-color: var(--surface-color);
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1.22rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.cardTitle {
+    font-size: 1.22rem;
+    font-weight: 700;
+    color: var(--heading-color);
+    margin-bottom: 1.5rem;
+}
+
+.cardText {
+
+    color: var(--default-color);
+}
+
+.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.listItem {
+    display: flex;
+    align-items: flex-start;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    margin-bottom: 0.55rem;
+    color: var(--default-color);
+}
+
+.listItem::before {
+    content: "\F272";
+    font-family: 'bootstrap-icons', serif;
+    color: var(--accent-color);
+    font-size: 1.1rem;
+    margin-right: 0.5rem;
+
+}
+

@@ -1,0 +1,126 @@
+.projectsSection {
+    text-align: center;
+
+}
+
+
+.cardContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 0 1rem;
+    align-items: start; /* Prevent grid items from stretching to match tallest item */
+}
+
+.card {
+    background-color: var(--surface-color);
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.cardImage {
+    width: 100%;
+    height: 200px; /* Consistent image height */
+    object-fit: cover;
+}
+
+.cardBody {
+    padding: 1.5rem;
+    text-align: left;
+}
+
+.cardTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    text-transform: capitalize;
+}
+
+.cardText {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+}
+
+.toggleBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border: 1px solid var(--accent-color);
+    border-radius: 0.3rem;
+    background-color: transparent;
+    color: var(--accent-color);
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-top: 1rem;
+}
+
+.toggleBtn:hover {
+    background-color: var(--accent-color);
+    color: var(--contrast-color);
+}
+
+.toggleIcon {
+    margin-left: 0.5rem;
+    transition: transform 0.3s ease;
+    font-size: 0.7rem;
+    display: inline-block;
+    color: var(--accent-color) ;
+}
+
+.toggleBtn:hover .toggleIcon{
+    color: var(--contrast-color);
+}
+
+
+.rotate {
+    transform: rotate(180deg);
+
+}
+
+/* Custom Collapse/Accordion Styles */
+.collapsible {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.collapsible.show {
+    max-height: 1000px;
+    margin-top: 1rem;
+}
+
+.detailsList {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+}
+
+.detailsListItem {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+    position: relative;
+    padding-left: 1.5rem; /* space for the icon */
+}
+
+.detailsListItem::before {
+    content: "\F272";
+    font-family: "bootstrap-icons", serif;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent-color);
+    font-size: 1rem;
+}
