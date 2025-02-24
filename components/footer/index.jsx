@@ -118,7 +118,7 @@ export const Footer = () => {
                 </div>
             </div>
 
-            <div className="container text-center mt-4">
+            <div className="container text-center mt-4 copyright">
                 <p>
                     © {new Date().getFullYear()}{" "}
                     <strong className="px-1 sitename">County Government of Vihiga</strong>{" "}

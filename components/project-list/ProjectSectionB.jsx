@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './ProjectsListSection.module.css';
+import {TableSection} from "@/components/project-list/TableSection";
 
 export const ProjectsListSectionB = () => {
 
@@ -18,34 +19,12 @@ export const ProjectsListSectionB = () => {
     ];
 
     return (
-        <section id='flloca' className={`section light-background  `} data-aos="fade-up">
-
-            <div className="section-title">
-                <h3 className={styles.subHeader}>B. FLLoCA CCRI 1 GRANT PROJECTS</h3>
-            </div>
-
-            <div className="container" data-aos="fade-up">
-
-                <table className={styles.table} data-aos="fade-up">
-                    <thead>
-                    <tr data-aos="fade-up">
-                        <th>S/N</th>
-                        <th>Ward</th>
-                        <th>Project Name</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {sectionB.map((row) => (
-                        <tr key={row.sn} data-aos="fade-up">
-                            <td>{row.sn}</td>
-                            <td>{row.ward}</td>
-                            <td>{row.project}</td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
-            </div>
-        </section>
+        <TableSection
+            title="B. FLLoCA CCRI 1 GRANT PROJECTS"
+            data={sectionB}
+            className={'light-background'}
+            id="flloca"
+        />
     );
 };
 

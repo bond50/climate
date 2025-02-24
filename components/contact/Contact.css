@@ -1,0 +1,190 @@
+
+.contact .info, .contact .form-wrapper {
+    background-color: var(--surface-color);
+    padding: 40px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.contact .info h3 {
+    font-weight: 600;
+    font-size: 24px;
+}
+
+.contact .info p {
+    color: color-mix(in srgb, var(--default-color), transparent 40%);
+    margin-bottom: 30px;
+    font-size: 15px;
+}
+
+.contact .info-item + .info-item {
+    padding-top: 20px;
+    margin-top: 20px;
+    border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+}
+
+.contact .info-item i {
+    font-size: 24px;
+    color: var(--accent-color);
+    transition: all 0.3s ease-in-out;
+    margin-right: 20px;
+}
+
+.contact .info-item h4 {
+    padding: 0;
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.contact .info-item p {
+    padding: 0;
+    margin-bottom: 0;
+    font-size: 14px;
+    color: color-mix(in srgb, var(--default-color), transparent 40%);
+}
+
+.contact .form {
+    width: 100%;
+}
+
+.contact .form .form-group {
+    padding-bottom: 8px;
+}
+
+.contact .form input[type=text],
+.contact .form input[type=email],
+.contact .form input[type=number],
+.contact .form input[type=date],
+.contact .form textarea,
+.contact .form .form-check {
+    color: var(--default-color);
+    background-color: var(--surface-color);
+    border-radius: 0;
+    box-shadow: none;
+    font-size: 14px;
+    border-color: color-mix(in srgb, var(--default-color), transparent 80%);
+}
+
+.contact .form .form-check-input {
+    color: var(--default-color);
+    font-size: 14px;
+    box-shadow: none;
+}
+
+.contact .form input[type=text]:focus,
+.contact .form input[type=email]:focus,
+.contact .form input[type=number]:focus,
+.contact .form input[type=date]:focus,
+.contact .form textarea:focus {
+    border-color: var(--accent-color);
+}
+
+.contact .form input[type=text]::placeholder,
+.contact .form input[type=email]::placeholder,
+.contact .form #complaintDate,
+.contact .form input[type=number]::placeholder,
+.contact .form textarea::placeholder, .contact .form-check {
+    color: color-mix(in srgb, var(--default-color), transparent 40%) !important;
+}
+
+.contact .form .label {
+    color: color-mix(in srgb, var(--default-color), transparent 20%) !important;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.contact .form input[type=text],
+.contact .form input[type=number],
+.contact .form input[type=date],
+.contact .form input[type=email] {
+    height: 48px;
+    padding: 10px 15px;
+}
+
+.contact .form textarea {
+    padding: 10px 12px;
+    height: 290px;
+}
+
+.contact .form button[type=submit] {
+    background: var(--accent-color);
+    color: var(--contrast-color);
+    border: 0;
+    padding: 13px 50px;
+    transition: 0.4s;
+    border-radius: 4px;
+}
+
+.contact .form button[type=submit]:hover {
+    background: color-mix(in srgb, var(--accent-color) 90%, black 15%);
+}
+
+.form .error-message {
+
+    background: #df1529;
+    color: #ffffff;
+    text-align: left;
+    padding: 15px;
+    margin-bottom: 24px;
+    font-weight: 600;
+}
+.required-asterisk {
+    color: #df1529;
+    margin-left: 0.25em;
+}
+.optional{
+    margin-left: 0.25em;
+}
+
+.mandatory-note {
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.line{
+    color: color-mix(in srgb, var(--default-color), transparent 30%);
+
+
+}
+
+.form .sent-message {
+
+    color: #ffffff;
+    background: #059652;
+    text-align: center;
+    padding: 15px;
+    margin-bottom: 24px;
+    font-weight: 600;
+}
+
+.form .loading {
+
+    background: var(--surface-color);
+    text-align: center;
+    padding: 15px;
+    margin-bottom: 24px;
+}
+
+.form .loading:before {
+    content: "";
+    display: inline-block;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    margin: 0 10px -6px 0;
+    border: 3px solid var(--accent-color);
+    border-top-color: var(--surface-color);
+    animation: form-loading 1s linear infinite;
+}
+
+@keyframes form-loading {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

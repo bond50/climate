@@ -1,0 +1,42 @@
+/* Partners.module.css */
+
+.partners {
+    padding: 10px 0; /* Increased padding */
+    text-align: center;
+    background-color: var(--surface-color); /* Added background color */
+}
+
+.partnersWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around; /* Changed to space-around */
+    align-items: center;
+    gap: 30px; /* Increased gap */
+    padding: 0 10px; /* added padding to the sides */
+}
+
+.partner {
+    display: flex; /* Added flex to center the image */
+    justify-content: center; /* Added to center the image */
+    align-items: center; /* Added to center the image */
+    width: 100px; /* Increased width */
+    height: 100px; /* Increased height */
+}
+
+.partnerImage {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* ensures image fits within the container */
+    transition: transform 0.3s ease;
+}
+
+.partnerImage:hover {
+    transform: scale(1.1);
+}
+
+@media (min-width: 992px) {
+    .partnersWrapper {
+        flex-wrap: nowrap;
+        justify-content: space-evenly; /* changed to space-evenly for better distribution */
+    }
+}

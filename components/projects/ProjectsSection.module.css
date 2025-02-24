@@ -3,115 +3,116 @@
 
 }
 
-
 .cardContainer {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    padding: 0 1rem;
-    align-items: start; /* Prevent grid items from stretching to match tallest item */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Increase min width */
+    gap: 2.5rem; /* Increase gap for better spacing */
+    padding: 0 0.55rem; /* Add padding to sides */
+    align-items: start;
 }
 
 .card {
     background-color: var(--surface-color);
-    border-radius: 1rem;
+    border-radius: 1.2rem; /* Slightly larger border radius */
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12); /* More pronounced shadow */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-10px); /* More pronounced hover effect */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.18);
+}
+
+.imageWrapper {
+    position: relative;
+    width: 100%;
+    height: 220px; /* Increased image height */
 }
 
 .cardImage {
-    width: 100%;
-    height: 200px; /* Consistent image height */
-    object-fit: cover;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Add a subtle border below the image */
 }
 
 .cardBody {
-    padding: 1.5rem;
+    padding: 1.5rem; /* Increase padding */
     text-align: left;
 }
 
 .cardTitle {
-    font-size: 1.25rem;
+    font-size: 1.3rem; /* Slightly larger title font */
     font-weight: 600;
-    color: var(--accent-color);
-    margin-bottom: 1rem;
+    color: var(--heading-color);
+    margin-bottom: 1.2rem; /* Increased margin */
     text-transform: capitalize;
 }
 
 .cardText {
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 0.5rem;
+    font-size: 1rem; /* Slightly larger text font */
+    line-height: 1.4; /* Improved line height */
+    margin-bottom: 0.7rem; /* Increased margin */
 }
 
 .toggleBtn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    border: 1px solid var(--accent-color);
-    border-radius: 0.3rem;
+    padding: 0.6rem 1.2rem; /* Increased padding */
+    font-size: 0.95rem; /* Slightly larger font */
+    border: 2px solid var(--accent-color); /* Thicker border */
+    border-radius: 0.4rem; /* Slightly larger radius */
     background-color: transparent;
     color: var(--accent-color);
     cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    margin-top: 1rem;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Added border transition */
+    margin-top: 1.2rem; /* Increased margin */
 }
 
 .toggleBtn:hover {
     background-color: var(--accent-color);
     color: var(--contrast-color);
+    border-color: var(--accent-color); /* Ensure border color changes on hover */
 }
 
 .toggleIcon {
-    margin-left: 0.5rem;
+    margin-left: 0.6rem; /* Increased margin */
     transition: transform 0.3s ease;
-    font-size: 0.7rem;
+    font-size: 0.8rem; /* Slightly larger icon */
     display: inline-block;
-    color: var(--accent-color) ;
+    color: var(--accent-color);
 }
 
-.toggleBtn:hover .toggleIcon{
+.toggleBtn:hover .toggleIcon {
     color: var(--contrast-color);
 }
 
-
 .rotate {
     transform: rotate(180deg);
-
 }
 
-/* Custom Collapse/Accordion Styles */
 .collapsible {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
+    margin-top: 1rem;
 }
 
 .collapsible.show {
     max-height: 1000px;
-    margin-top: 1rem;
 }
 
 .detailsList {
     list-style: none;
     padding: 0;
-    margin-top: 1rem;
+    margin-top: 1.2rem; /* Increased margin */
 }
 
 .detailsListItem {
-    font-size: 0.9rem;
-    line-height: 1.6;
-    margin-bottom: 0.5rem;
+    font-size: 0.95rem; /* Slightly larger font */
+    line-height: 1.7; /* Increased line height */
+    margin-bottom: 0.6rem; /* Increased margin */
     position: relative;
-    padding-left: 1.5rem; /* space for the icon */
+    padding-left: 1.8rem; /* Increased padding */
 }
 
 .detailsListItem::before {
@@ -122,5 +123,5 @@
     top: 50%;
     transform: translateY(-50%);
     color: var(--accent-color);
-    font-size: 1rem;
+    font-size: 1.1rem; /* Slightly larger icon */
 }

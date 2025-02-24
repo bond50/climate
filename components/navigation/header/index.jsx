@@ -1,54 +1,91 @@
-import React from 'react';
-import Link from "next/link";
-import Image from "next/image";
-export const Header = () => (
-    <header id="header" className="header d-flex align-items-center sticky-top">
-        <div className="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+'use client'
+import React, { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import styles from './Header.module.css';
 
-            <Link href="#home" className="logo d-flex align-items-center">
-                 <Image src="/logo.png" className='img-fluid' alt="" width={100} height={100} priority/>
-                <h1 className="sitename">Climate change</h1>
-            </Link>
+export const Header = () => {
+    const [mobileNavActive, setMobileNavActive] = useState(false);
+    const [activeLink, setActiveLink] = useState('');
 
-            <nav id="navmenu" className="navmenu">
-                <ul>
-                    <li>
-                        <Link href="#about" className="active">
-                            About
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href="#partners" >
-                            Partners
-                        </Link>
-                    </li>
+    const toggleMobileNav = () => {
+        setMobileNavActive((prev) => !prev);
+    };
 
-                    <li>
-                        <Link href="#strategy">Objectives</Link>
-                    </li>
-                    <li>
-                        <Link href="#cccf">CCCF 2023/2024</Link>
-                    </li>
-                    <li>
-                        <Link href="#flloca">FLLoCA CCRI projects</Link>
-                    </li>
-                    <li>
-                        <Link href="#projects" >
-                            Projects
-                        </Link>
-                    </li>
+    const handleLinkClick = (link) => {
+        setActiveLink(link);
+        setMobileNavActive(false);
+    };
 
+    // Array of navigation links
+    const navLinks = [
+        { href: "#about", label: "About" },
+        { href: "#partners", label: "Partners" },
+        { href: "#strategy", label: "Objectives" },
+        { href: "#cccf", label: "CCCF 2023/2024" },
+        { href: "#flloca", label: "FLLoCA CCRI projects" },
+        { href: "#projects", label: "Projects" },
+        { href: "#contact", label: "Contact" }
+    ];
 
+    return (
 
-                    <li>
-                        <Link href="#contact">Contact</Link>
-                    </li>
-                </ul>
-                <i className="mobile-nav-toggle d-xl-none bi bi-list"></i>
-            </nav>
+        <>
+            <div className={`${styles.topbar} d-flex align-items-center`}>
+                <div className="container d-flex justify-content-center justify-content-md-between">
+                    <div className={`${styles['contact-info']} d-flex align-items-center`}>
+                        <i className="bi bi-envelope d-flex align-items-center"><a
+                            href="mailto:directorclimate@vihiga.go.ke">directorclimate@vihiga.go.ke</a></i>
+                        <i className="bi bi-phone d-flex align-items-center ms-4"><span>+254 799 116 630</span></i>
+                    </div>
+                </div>
+            </div>
 
-        </div>
-    </header>
-);
+            <header id="header" className={`${styles.header} d-flex align-items-center sticky-top`}>
 
 
+                <div
+                    className="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+                    <Link href="#home" className={`${styles.logo} d-flex align-items-center`}>
+                        <Image
+                            src="/logo.png"
+                            className={styles.logoImage}
+                            alt="Climate Change Logo"
+                            width={60}
+                            height={60}
+                            priority
+                        />
+                        <h1 className={styles.siteName}>Climate Change</h1>
+                    </Link>
+                    <nav id="navmenu" className={styles.navmenu}>
+                        {/* Mobile toggle button */}
+                        <button
+                            className={`${styles.mobileNavToggle} ${mobileNavActive ? styles.mobileNavToggleActive : ''} d-xl-none`}
+                            onClick={toggleMobileNav}
+                            aria-label="Toggle navigation"
+                        >
+                            <i className={mobileNavActive ? "bi bi-x" : "bi bi-list"}></i>
+                        </button>
+                        {/* Mobile nav overlay */}
+                        <div className={`${styles.navLinks} ${mobileNavActive ? styles.activeNav : ''}`}>
+                            <ul>
+                                {navLinks.map((link) => (
+                                    <li key={link.href}>
+                                        <Link
+                                            href={link.href}
+                                            onClick={() => handleLinkClick(link.href)}
+                                            className={`${styles.navLink} ${activeLink === link.href ? styles.active : ''}`}
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </header>
+
+        </>
+    );
+};

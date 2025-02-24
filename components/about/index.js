@@ -9,7 +9,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 export const AboutSection = () => (
-    <section id="about" className="about section light-background ">
+    <section id="about" className=" section about light-background ">
         <div className="container">
             <div className="row  justify-content-between align-items-center">
                 {/* Slider Column */}

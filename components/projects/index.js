@@ -2,6 +2,7 @@
 import {useState} from 'react';
 
 import styles from '@/components/projects/ProjectsSection.module.css'
+import Image from "next/image";
 
 const projects = [
     {
@@ -262,52 +263,38 @@ export const ProjectsSection = () => {
     };
 
     return (
-        <section id="projects" className='section '>
+        <section id="projects" className={`section ${styles.projectsSection}`}>
             <div className="container" data-aos="fade-up">
-                <div className='section-title'>
-                    <h2>
-                        Investment Projects
-                    </h2>
-                    <p >Vihiga County Climate change Fund Investments projects</p>
-
+                <div className="section-title">
+                    <h2>Investment Projects</h2>
+                    <p>Vihiga County Climate Change Fund Investments projects</p>
                 </div>
 
                 <div className={styles.cardContainer}>
                     {projects.map((project) => (
                         <div key={project.id} className={styles.card} data-aos="fade-up">
-                            <img
-                                src={project.image}
-                                alt={project.title}
-                                className={styles.cardImage}
-                            />
+                            <div className={styles.imageWrapper}>
+                                <Image
+                                    src={project.image}
+                                    alt={project.title}
+                                    fill
+                                    style={{ objectFit: 'cover' }}
+                                    className={styles.cardImage}
+                                />
+                            </div>
                             <div className={styles.cardBody}>
-                                <h5 className={styles.cardTitle}>
-                                    {project.title.toLocaleLowerCase()}
-                                </h5>
+                                <h5 className={styles.cardTitle}>{project.title.toLowerCase()}</h5>
                                 <p className={styles.cardText}>
                                     <strong>Location:</strong> {project.location}
                                 </p>
                                 <p className={styles.cardText}>
                                     <strong>Date:</strong> {project.date}
                                 </p>
-                                <button
-                                    className={styles.toggleBtn}
-                                    onClick={() => toggleProject(project.id)}
-                                >
+                                <button className={styles.toggleBtn} onClick={() => toggleProject(project.id)}>
                                     {openProjectId === project.id ? 'Hide Details' : 'View Details'}
-                                    <span
-                                        className={`${styles.toggleIcon} ${
-                                            openProjectId === project.id ? styles.rotate : ''
-                                        }`}
-                                    >
-                    ▼
-                  </span>
+                                    <span className={`${styles.toggleIcon} ${openProjectId === project.id ? styles.rotate : ''}`}>▼</span>
                                 </button>
-                                <div
-                                    className={`${styles.collapsible} ${
-                                        openProjectId === project.id ? styles.show : ''
-                                    }`}
-                                >
+                                <div className={`${styles.collapsible} ${openProjectId === project.id ? styles.show : ''}`}>
                                     <p className={styles.cardText}>
                                         <strong>Objective:</strong> {project.objective}
                                     </p>

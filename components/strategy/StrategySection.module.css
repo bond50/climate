@@ -1,31 +1,34 @@
 /* StrategySection.module.css */
 
-
 .card {
     background-color: var(--surface-color);
-    border-radius: 1rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 1.22rem;
+    border-radius: 1.2rem; /* Increased border radius */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* More pronounced shadow */
+    padding: 1.5rem; /* Increased padding */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     width: 100%;
-
+    height: 100%; /* added to make the card fill the column */
+    display: flex; /* added */
+    flex-direction: column; /* added */
 }
 
 .card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-10px); /* More pronounced hover effect */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.18);
 }
 
 .cardTitle {
-    font-size: 1.22rem;
+    font-size: 1.3rem; /* Increased font size */
     font-weight: 700;
     color: var(--heading-color);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.8rem; /* Increased margin */
 }
 
 .cardText {
-
     color: var(--default-color);
+    font-size: 1rem; /* Added font-size to card text */
+    line-height: 1.6; /* added line height */
+    flex-grow: 1; /* added, to make the card text use the remaining space */
 }
 
 .list {
@@ -37,9 +40,9 @@
 .listItem {
     display: flex;
     align-items: flex-start;
-    font-size: 0.88rem;
-    line-height: 1.6;
-    margin-bottom: 0.55rem;
+    font-size: 0.95rem; /* Increased font size */
+    line-height: 1.7; /* Increased line height */
+    margin-bottom: 0.7rem; /* Increased margin */
     color: var(--default-color);
 }
 
@@ -47,8 +50,6 @@
     content: "\F272";
     font-family: 'bootstrap-icons', serif;
     color: var(--accent-color);
-    font-size: 1.1rem;
-    margin-right: 0.5rem;
-
+    font-size: 1.2rem; /* Increased font size */
+    margin-right: 0.6rem; /* Increased margin */
 }
-

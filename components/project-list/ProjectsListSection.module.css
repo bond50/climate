@@ -1,45 +1,41 @@
 /* ProjectsListSection.module.css */
 
 .projectsListSection {
-
     text-align: center;
-}
 
-.header {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 40px;
-    color: var(--heading-color);
 }
-
 
 .subHeader {
-    font-size: 2rem;
+    font-size: 2.2rem; /* Increased font size */
     font-weight: 600;
-    margin-bottom: 20px;
-    color: var(--accent-color);
+    margin-bottom: 30px; /* Increased margin */
+    color: var(--heading-color);
+    letter-spacing: 1px; /* Added letter spacing */
 }
 
 .table {
     width: 100%;
     border-collapse: collapse;
-    border-radius: 8px;
+    border-radius: 12px; /* Increased border radius */
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* More pronounced shadow */
+    margin-bottom: 30px; /* Increased margin */
 }
 
 .table th,
 .table td {
-    padding: 1rem 1.5rem;
+    padding: 1.25rem 1.75rem; /* Increased padding */
     text-align: left;
     border-bottom: 1px solid #e0e0e0;
+    font-size: 1rem; /* Slightly larger font size */
 }
 
 .table th {
     background-color: var(--surface-color);
-    font-weight: 600;
+    font-weight: 700; /* Increased font weight */
     color: var(--heading-color);
+    text-transform: uppercase; /* Added uppercase transformation */
+    letter-spacing: 1px; /* Added letter spacing */
 }
 
 .table tbody tr:nth-child(even) {
@@ -48,6 +44,7 @@
 
 .table tbody tr:hover {
     background-color: #f1f1f1;
+    transition: background-color 0.3s ease; /* Added hover transition */
 }
 
 .table tbody tr:last-child td {
@@ -58,15 +55,12 @@
 @media (max-width: 768px) {
     .table th,
     .table td {
-        padding: 0.75rem;
+        padding: 1rem;
         font-size: 0.9rem;
     }
 
-    .header {
-        font-size: 2rem;
-    }
-
     .subHeader {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
     }
 }
