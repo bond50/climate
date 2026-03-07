@@ -1,0 +1,204 @@
+name: 14d - Build & Push climate (GHCR) + Dispatch Deploy
+run-name: "14d Build+Push climate (tag=${{ github.sha }}, source_sha=${{ inputs.source_sha || github.sha }})"
+
+on:
+    push:
+        branches: [main]
+    workflow_dispatch:
+        inputs:
+            run_infra:
+                description: "Also run infra/provision step on target repo"
+                required: true
+                default: "false"
+            source_sha:
+                description: "Source repo full SHA (for tracking)"
+                required: false
+                default: ""
+
+permissions:
+    contents: read
+    packages: write
+
+concurrency:
+    group: climate-ghcr
+    cancel-in-progress: true
+
+jobs:
+    build_push_dispatch:
+        runs-on: ubuntu-latest
+
+        permissions:
+            contents: read
+            packages: write
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Compute image + tags
+              id: vars
+              shell: bash
+              run: |
+                  set -euo pipefail
+
+                  IMAGE="ghcr.io/${{ github.repository_owner }}/climate"
+                  SHA="${GITHUB_SHA}"
+                  TAG="${SHA:0:7}"
+
+                  if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+                    RUN_INFRA="${{ inputs.run_infra }}"
+                    SOURCE_SHA="${{ inputs.source_sha }}"
+                  else
+                    RUN_INFRA="false"
+                    SOURCE_SHA=""
+                  fi
+
+                  if [[ -z "${SOURCE_SHA:-}" ]]; then
+                    SOURCE_SHA="${GITHUB_SHA}"
+                  fi
+
+                  echo "image=${IMAGE}" >> "$GITHUB_OUTPUT"
+                  echo "sha=${SHA}" >> "$GITHUB_OUTPUT"
+                  echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+                  echo "run_infra=${RUN_INFRA}" >> "$GITHUB_OUTPUT"
+                  echo "source_sha=${SOURCE_SHA}" >> "$GITHUB_OUTPUT"
+
+                  {
+                    echo "### climate build inputs"
+                    echo ""
+                    echo "- image: \`${IMAGE}\`"
+                    echo "- tag: \`${TAG}\`"
+                    echo "- run_infra: \`${RUN_INFRA}\`"
+                    echo "- source_sha: \`${SOURCE_SHA}\`"
+                  } >> "$GITHUB_STEP_SUMMARY"
+
+            - name: Validate required secrets (fail fast)
+              shell: bash
+              run: |
+                  set -euo pipefail
+                  missing=0
+
+                  require() {
+                    local name="$1"
+                    local value="$2"
+                    local hint="$3"
+                    if [[ -z "${value}" ]]; then
+                      echo "::error::Missing secret: ${name}. ${hint}"
+                      missing=1
+                    else
+                      echo "✅ ${name} present"
+                    fi
+                  }
+
+                  require "NEXT_PUBLIC_HCAPTCHA_SITEKEY" "${{ secrets.NEXT_PUBLIC_HCAPTCHA_SITEKEY }}" "Your public hCaptcha sitekey"
+                  require "GH_APP_ID" "${{ secrets.GH_APP_ID }}" "GitHub App ID for dispatch"
+                  require "GH_APP_PRIVATE_KEY" "${{ secrets.GH_APP_PRIVATE_KEY }}" "GitHub App private key PEM"
+                  require "GHCR_TOKEN" "${{ secrets.GHCR_TOKEN }}" "PAT or package token with write:packages"
+
+                  if [[ "$missing" -ne 0 ]]; then
+                    exit 1
+                  fi
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
+            - name: Login to GHCR
+              uses: docker/login-action@v3
+              with:
+                  registry: ghcr.io
+                  username: ${{ github.repository_owner }}
+                  password: ${{ secrets.GHCR_TOKEN }}
+
+            - name: Build and push (plain logs)
+              uses: docker/build-push-action@v6
+              env:
+                  BUILDKIT_PROGRESS: plain
+              with:
+                  context: .
+                  file: Dockerfile
+                  push: true
+                  provenance: false
+                  sbom: false
+                  tags: |
+                      ${{ steps.vars.outputs.image }}:latest
+                      ${{ steps.vars.outputs.image }}:${{ steps.vars.outputs.tag }}
+                  build-args: |
+                      NEXT_PUBLIC_HCAPTCHA_SITEKEY=${{ secrets.NEXT_PUBLIC_HCAPTCHA_SITEKEY }}
+                      GIT_SHA=${{ steps.vars.outputs.sha }}
+                  cache-from: type=gha
+                  cache-to: type=gha,mode=max
+
+            - name: Verify tag exists in GHCR
+              shell: bash
+              env:
+                  IMAGE: ${{ steps.vars.outputs.image }}
+                  TAG: ${{ steps.vars.outputs.tag }}
+              run: |
+                  set -euo pipefail
+                  docker buildx imagetools inspect "${IMAGE}:${TAG}" >/dev/null
+                  echo "✅ Found ${IMAGE}:${TAG}"
+
+            - name: Create GitHub App token for target repo
+              id: app_token
+              uses: actions/create-github-app-token@v1
+              with:
+                  app-id: ${{ secrets.GH_APP_ID }}
+                  private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+                  owner: bond50
+                  repositories: vihigago-vps
+
+            - name: Dispatch deploy workflow on target repo
+              shell: bash
+              env:
+                  TOKEN: ${{ steps.app_token.outputs.token }}
+                  OWNER: bond50
+                  REPO: vihigago-vps
+                  WORKFLOW_FILE: 14e-deploy-climate-dispatch.yml
+                  REF: main
+                  IMAGE_TAG: ${{ steps.vars.outputs.tag }}
+                  RUN_INFRA: ${{ steps.vars.outputs.run_infra }}
+                  SOURCE_SHA: ${{ steps.vars.outputs.source_sha }}
+              run: |
+                  set -euo pipefail
+
+                  if ! command -v jq >/dev/null 2>&1; then
+                    sudo apt-get update -y >/dev/null
+                    sudo apt-get install -y jq >/dev/null
+                  fi
+
+                  API="https://api.github.com/repos/${OWNER}/${REPO}"
+
+                  echo "==> Verifying workflow exists: ${OWNER}/${REPO}/.github/workflows/${WORKFLOW_FILE}"
+                  curl -fsS \
+                    -H "Accept: application/vnd.github+json" \
+                    -H "Authorization: Bearer ${TOKEN}" \
+                    "${API}/actions/workflows/${WORKFLOW_FILE}" >/dev/null
+
+                  dispatched_at="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+
+                  echo "==> Dispatching ${WORKFLOW_FILE} ref=${REF}"
+                  echo "    inputs: image_tag=${IMAGE_TAG} run_infra=${RUN_INFRA} source_sha=${SOURCE_SHA}"
+
+                  curl -fsS -X POST \
+                    -H "Accept: application/vnd.github+json" \
+                    -H "Authorization: Bearer ${TOKEN}" \
+                    "${API}/actions/workflows/${WORKFLOW_FILE}/dispatches" \
+                    -d "$(jq -n \
+                      --arg ref "${REF}" \
+                      --arg run_infra "${RUN_INFRA}" \
+                      --arg source_sha "${SOURCE_SHA}" \
+                      --arg image_tag "${IMAGE_TAG}" \
+                      '{ref:$ref, inputs:{run_infra:$run_infra, source_sha:$source_sha, image_tag:$image_tag}}'
+                    )"
+
+                  echo "✅ Dispatched at ${dispatched_at}"
+
+                  {
+                    echo "### Deploy dispatched"
+                    echo ""
+                    echo "- repo: \`${OWNER}/${REPO}\`"
+                    echo "- workflow: \`${WORKFLOW_FILE}\`"
+                    echo "- ref: \`${REF}\`"
+                    echo "- image_tag: \`${IMAGE_TAG}\`"
+                    echo "- source_sha: \`${SOURCE_SHA}\`"
+                  } >> "$GITHUB_STEP_SUMMARY"
