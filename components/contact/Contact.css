@@ -17,6 +17,34 @@
     font-size: 15px;
 }
 
+.contact .submission-steps {
+    margin: 24px 0 12px;
+    padding: 20px;
+    background: color-mix(in srgb, var(--accent-color), white 92%);
+    border-left: 4px solid var(--accent-color);
+}
+
+.contact .submission-steps h4 {
+    margin-bottom: 12px;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.contact .submission-steps ol {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.contact .submission-steps li {
+    margin-bottom: 10px;
+    color: color-mix(in srgb, var(--default-color), transparent 20%);
+    font-size: 14px;
+}
+
+.contact .submission-steps li:last-child {
+    margin-bottom: 0;
+}
+
 .contact .info-item + .info-item {
     padding-top: 20px;
     margin-top: 20px;
@@ -43,6 +71,13 @@
     margin-bottom: 0;
     font-size: 14px;
     color: color-mix(in srgb, var(--default-color), transparent 40%);
+}
+
+.contact .submission-note {
+    padding: 14px 16px;
+    background: color-mix(in srgb, var(--default-color), white 94%);
+    font-size: 14px;
+    color: color-mix(in srgb, var(--default-color), transparent 15%);
 }
 
 .contact .form {

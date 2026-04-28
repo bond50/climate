@@ -71,6 +71,15 @@ export const Contact = () => {
                                     regarding climate change projects and initiatives.
                                     Please note that providing your personal details is optional and will remain confidential.
                                 </p>
+                                <div className="submission-steps">
+                                    <h4>How to Submit a Grievance</h4>
+                                    <ol>
+                                        <li>Choose your preferred method: use the contact details below or complete the grievance form.</li>
+                                        <li>Share the key details of the issue, including what happened, where it happened, and the date of the incident.</li>
+                                        <li>Provide your phone number or email only if you would like feedback or follow-up on your grievance.</li>
+                                        <li>Submit your grievance and the Directorate will review it through the available grievance handling process.</li>
+                                    </ol>
+                                </div>
                                 <div className="info-item d-flex mt-3">
                                     <i className="bi bi-geo-alt flex-shrink-0"></i>
                                     <div>
@@ -95,6 +104,9 @@ export const Contact = () => {
                                         <h4>Call:</h4>
                                         <p>+254 799 116 630</p>
                                     </div>
+                                </div>
+                                <div className="submission-note mt-4">
+                                    <strong>Submission options:</strong> Send your grievance using the contact information above or fill in the form on this page.
                                 </div>
                             </div>
                         </div>
