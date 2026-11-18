@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Script from 'next/script'
 import '@/components/contact/Contact.css'
 import { submitGrievance } from "@/actions/contact"
@@ -20,8 +20,15 @@ export const Contact = () => {
         message: null,
     })
 
-    // hCaptcha site key from your env variable
-    const siteKey = process.env.NEXT_PUBLIC_HCAPTCHA_SITEKEY || 'YOUR_HCAPTCHA_SITEKEY'
+    // Cloudflare Turnstile site key (public, set at build time)
+    const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''
+
+    // A Turnstile token works once: get a fresh one after every submission
+    useEffect(() => {
+        if (state?.message && typeof window !== 'undefined' && window.turnstile) {
+            try { window.turnstile.reset() } catch { /* widget not rendered yet */ }
+        }
+    }, [state])
 
     // Initialize local states for form fields
     const initialGrievance = getDefault(state?.payload, 'grievanceRelates') || 'Climate Change project'
@@ -53,7 +60,7 @@ export const Contact = () => {
     return (
         <>
             <Script
-                src="https://hcaptcha.com/1/api.js"
+                src="https://challenges.cloudflare.com/turnstile/v0/api.js"
                 strategy="afterInteractive"
                 async
                 defer
@@ -380,9 +387,9 @@ export const Contact = () => {
                                     ></textarea>
                                 </div>
 
-                                {/* hCaptcha Widget */}
+                                {/* Cloudflare Turnstile security check */}
                                 <div className="mt-4 d-flex align-items-center justify-content-center">
-                                    <div className="h-captcha" data-sitekey={siteKey}></div>
+                                    <div className="cf-turnstile" data-sitekey={siteKey}></div>
                                 </div>
 
                                 {/* Submission Messages */}
