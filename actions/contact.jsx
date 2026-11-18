@@ -35,18 +35,18 @@ const esc = (v) => String(v ?? '')
 const opt = (max) => z.string().trim().max(max).optional().nullable()
 
 const GrievanceSchema = z.object({
-    grievanceRelates: z.string().trim().min(1, { message: 'Grievance relation is required' }).max(200),
+    grievanceRelates: z.string().trim().min(1, { error: 'Grievance relation is required' }).max(200),
     otherGrievance: opt(300),
     grievanceGender: opt(30),
     grievanceAge: opt(30),
     grievancePhone: opt(30),
     grievanceName: opt(120),
-    grievanceEmail: z.union([z.literal(''), z.string().trim().email({ message: 'Enter a valid e-mail address' }).max(200)]).optional().nullable(),
+    grievanceEmail: z.union([z.literal(''), z.string().trim().pipe(z.email({ error: 'Enter a valid e-mail address' }).max(200))]).optional().nullable(),
     contactPreference: opt(10),
-    incidentWard: z.string().trim().min(1, { message: 'Ward is required' }).max(100),
-    incidentVillage: z.string().trim().min(1, { message: 'Village is required' }).max(100),
-    grievanceDescription: z.string().trim().min(10, { message: 'Description must be at least 10 characters' }).max(5000),
-    complaintDate: z.string().trim().min(1, { message: 'Complaint date is required' }).max(40),
+    incidentWard: z.string().trim().min(1, { error: 'Ward is required' }).max(100),
+    incidentVillage: z.string().trim().min(1, { error: 'Village is required' }).max(100),
+    grievanceDescription: z.string().trim().min(10, { error: 'Description must be at least 10 characters' }).max(5000),
+    complaintDate: z.string().trim().min(1, { error: 'Complaint date is required' }).max(40),
 }).refine((data) => {
     if ((data.grievanceEmail && data.grievanceEmail.trim() !== '') ||
         (data.grievancePhone && data.grievancePhone.trim() !== '')) {
@@ -54,7 +54,7 @@ const GrievanceSchema = z.object({
     }
     return true
 }, {
-    message: 'Contact preference is required when contact details are provided',
+    error: 'Contact preference is required when contact details are provided',
     path: ['contactPreference'],
 })
 
@@ -154,7 +154,7 @@ export async function submitGrievance(_, formData) {
         complaintDate: formData.get('complaintDate'),
     })
     if (!validated.success) {
-        const errors = validated.error.flatten().fieldErrors
+        const errors = z.flattenError(validated.error).fieldErrors
         const errorMessage = Object.entries(errors)
             .map(([field, messages]) => `${field}: ${messages.join(', ')}`)
             .join(' | ')
