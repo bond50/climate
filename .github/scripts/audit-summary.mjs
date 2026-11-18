@@ -21,8 +21,9 @@ if (advisories.length === 0 && data?.vulnerabilities) {
   const seen = new Set();
   for (const v of Object.values(data.vulnerabilities)) {
     for (const via of v.via ?? []) {
-      if (typeof via !== 'object' || seen.has(via.source)) continue;
-      seen.add(via.source);
+      const key = typeof via === 'object' ? via.url || via.source : null;
+      if (!key || seen.has(key)) continue;
+      seen.add(key);
       advisories.push({
         severity: via.severity,
         module_name: via.name,
